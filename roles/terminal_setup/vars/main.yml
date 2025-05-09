@@ -1,0 +1,3 @@
+---
+# vars file for roles/terminal_setup/
+my_script_repo: "https://github.com/edur0791/my_scripts.git"
