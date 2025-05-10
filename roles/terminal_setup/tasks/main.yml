@@ -1,13 +1,7 @@
----
-# tasks file for roles/terminal_setup/
-
 - name: Detect OS Type
   set_fact:
-    target_os: >-
-      {% if ansible_facts['os_family'] == 'Darwin' %}mac
-      {% elif 'Microsoft' in ansible_facts['kernel'] %}wsl
-      % else %}linux
-      {% endif %}
-
+    target_os: "{{ 'mac' if ansible_facts['os_family'] == 'Darwin' else 'wsl' if 'Microsoft' in ansible_facts['kernel'] else 'linux' }}"
+- debug:
+    var: target_os
 - name: Include OS-Specific Tasks
   include_tasks: "{{ target_os }}.yml"

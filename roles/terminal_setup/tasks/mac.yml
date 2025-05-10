@@ -14,29 +14,16 @@
     - python3
     - node
     - visual-studio-code
-
-- name: Clone my_scripts repo
-  git:
-    repo: "{{my_scripts_repo}}/my_scripts"
-    dest: "{{ ansible_env.HOME }}/my_scripts"
-    
-- name: Symlink python scripts to /usr/local/bin
-  file: 
-    src: "{{ ansible_env.HOME }}/my_scripts/python_scripts/{{ item }}"
-    dest: "/usr/local/bin/{{ item }}"
-    state: link
-    force: yes
-    mode: '0755'
-  with_fileglob:
-    - "{{ ansible_env.HOME }}/my_scripts/python_scripts/*"
+  ignore_errors: true
 
 - name: Setup .vimrc
   template:
     src: .vimrc.j2
-    dest: "{{ ansible_env.HOME }}/.vimrc"
+    dest: "{{ lookup('env', 'HOME') }}/.vimrc"
+    mode: '0644'
 
 - name: Setup Shell RC File
   template:
     src: shellrc.j2
     dest: "{{ ansible_env.HOME }}/.zshrc"
-
+    mode: '0644'
