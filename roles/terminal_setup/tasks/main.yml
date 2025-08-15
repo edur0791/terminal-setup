@@ -5,3 +5,13 @@
     var: target_os
 - name: Include OS-Specific Tasks
   include_tasks: "{{ target_os }}.yml"
+---
+# tasks file for roles/terminal_setup/
+
+- name: mac tasks
+  ansible.builtin.include_tasks: mac.yml
+  when: ansible_system == "Darwin"
+
+- name: linux tasks
+  ansible.builtin.include_tasks: linux.yml
+  when: ansible_system != "Darwin"

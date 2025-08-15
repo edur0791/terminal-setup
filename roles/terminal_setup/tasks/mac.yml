@@ -16,6 +16,7 @@
     - visual-studio-code
   ignore_errors: true
 
+
 - name: Setup .vimrc
   template:
     src: .vimrc.j2
