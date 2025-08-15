@@ -1,3 +1,5 @@
 ---
 # vars file for roles/terminal_setup/
-my_scripts_repo: "https://github.com/edur0791/my_scripts.git"
+my_script_repo: "https://github.com/edur0791/kubernetes_in_action_second_edition"
+
+
