@@ -1,0 +1,92 @@
+" ---------- General ----------
+set nocompatible
+set encoding=utf-8
+
+" Line numbers with fixed width (no gutter shifting)
+set number
+set numberwidth=5
+if exists('&signcolumn')
+  set signcolumn=yes
+endif
+
+" Search settings
+set incsearch
+set hlsearch
+set ignorecase
+set smartcase
+
+" Persistent undo
+set undofile
+set undodir=~/.vim/undo
+if !isdirectory($HOME . "/.vim/undo")
+  call mkdir($HOME . "/.vim/undo", "p")
+endif
+
+" Global indentation defaults
+set expandtab
+set shiftwidth=2
+set softtabstop=2
+set tabstop=2
+set autoindent
+set smartindent
+
+" Highlight trailing whitespace
+if !hlexists("ExtraWhitespace")
+  highlight ExtraWhitespace ctermbg=DarkRed guibg=DarkRed
+endif
+match ExtraWhitespace /\s\+$/
+
+" Backspace fixes
+set backspace=indent,eol,start
+
+" Filetype detection & syntax highlighting
+filetype plugin indent on
+syntax on
+
+" ---------- Shift-Tab fix for all platforms ----------
+if empty(&t_kB)
+  execute "set t_kB=\e[Z"
+endif
+
+" Normal mode: outdent
+nnoremap <S-Tab> <<
+nnoremap <kBackTab> <<
+
+" Visual mode: indent/unindent, keep selection
+xnoremap <Tab> >gv
+xnoremap <S-Tab> <gv
+xnoremap <kBackTab> <gv
+
+" Insert mode: outdent
+inoremap <S-Tab> <C-d>
+inoremap <kBackTab> <C-d>
+
+" ---------- Filetype-specific ----------
+" YAML: 2 spaces
+augroup ft_yaml
+  autocmd!
+  autocmd FileType yaml setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=2
+augroup END
+
+" Python: 4 spaces + PEP 8 ruler
+augroup ft_python
+  autocmd!
+  autocmd FileType python setlocal expandtab shiftwidth=4 softtabstop=4 tabstop=4
+  if exists('&colorcolumn')
+    autocmd FileType python setlocal colorcolumn=89
+  endif
+augroup END
+
+" ---------- Quality of life ----------
+" Restore cursor position on file reopen
+augroup restore_cursor
+  autocmd!
+  autocmd BufReadPost *
+        \ if line("'\"") > 0 && line("'\"") <= line("$") |
+        \   execute "normal! g`\"" |
+        \ endif
+augroup END
+
+" Make wrapped lines behave like real lines with j/k
+nnoremap j gj
+nnoremap k gk
