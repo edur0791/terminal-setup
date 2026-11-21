@@ -49,3 +49,14 @@ hi DiffAdd    cterm=NONE ctermfg=NONE ctermbg=22
 hi DiffDelete cterm=NONE ctermfg=131  ctermbg=52
 hi DiffChange cterm=NONE ctermfg=NONE ctermbg=236
 hi DiffText   cterm=bold ctermfg=NONE ctermbg=24
+
+" All filetypes: p pastes the last yank (register 0), so later deletes don't change it
+nnoremap <silent> p "0p
+
+augroup yaml_copy_paste
+  autocmd!
+  " YAML: yank the selection and leave the cursor at its end, on its bottom line
+  autocmd FileType yaml xnoremap <buffer> <silent> y y`]
+  " YAML: put the last yank as whole lines below the current line, after one blank line
+  autocmd FileType yaml nnoremap <buffer> <silent> p :<C-U>put =[''] + getreg('0', 1, 1)<CR>
+augroup END
